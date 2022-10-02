@@ -69,7 +69,6 @@ namespace CockpitLights
             else
             {
                 BridgesView.Items.Add(NoBridgeFoundMessage);
-                BridgesView.Items.Add("001788fffe63baa2");
             }
         }
 

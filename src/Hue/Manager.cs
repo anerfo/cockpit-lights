@@ -27,7 +27,6 @@ namespace CockpitLights.Hue
                     {
                         IpAddresses[bridge.BridgeId] = bridge.IpAddress;
                     }
-                    IpAddresses["001788fffe63baa2"] = "192.168.2.112";
                     BridgesDetected(bridgesLocateTask.Result);
                 }
             });
