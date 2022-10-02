@@ -5,6 +5,7 @@ namespace CockpitLights.Model
     internal class Profile
     {
         public Collection<Light> Lights { get; private set; } = new();
+        public string Name { get; set; } = "New Profile";
 
         public Light GetLight(string ipAddress, string name)
         {
@@ -30,17 +31,8 @@ namespace CockpitLights.Model
 
         private void Update(Light entry)
         {
-            foreach (var current in Lights)
-            {
-                if (current.IsSameLight(entry))
-                {
-                    Lights.Add(entry);
-                }
-                else
-                {
-                    Lights.Add(current);
-                }
-            }
+            Lights.Where(l => l.IsSameLight(entry)).ToList().ForEach(l => Lights.Remove(l));
+            Lights.Add(entry);
         }
 
         private bool Contains(Light entry)

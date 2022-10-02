@@ -15,11 +15,6 @@ namespace CockpitLights.Hue
         public Dictionary<string, byte> LastSend = new();
         private Dictionary<string, string> IpAddresses = new();
 
-        public Manager()
-        {
-            StartLocateBridges();
-        }
-
         public void StartLocateBridges()
         {
             IBridgeLocator locator = new HttpBridgeLocator();
@@ -32,6 +27,7 @@ namespace CockpitLights.Hue
                     {
                         IpAddresses[bridge.BridgeId] = bridge.IpAddress;
                     }
+                    IpAddresses["001788fffe63baa2"] = "192.168.2.112";
                     BridgesDetected(bridgesLocateTask.Result);
                 }
             });
@@ -59,17 +55,17 @@ namespace CockpitLights.Hue
             }
         }
 
-        public async void SetLight(Model.Light light, byte brightness)
+        public async void SetLight(Model.Light light, byte brightness, bool ignoreLastSend = false)
         {
             if (light == null) return;
             if (string.IsNullOrEmpty(light.BridgeId)) return;
             if (IpAddresses.TryGetValue(light.BridgeId, out var ipAddress) == false) return;
             if (string.IsNullOrEmpty(light.LightName)) return;
-            if (LastSend.ContainsKey(light.FullName) && LastSend[light.FullName] == brightness) return;
+            if (!ignoreLastSend && LastSend.ContainsKey(light.FullName) && LastSend[light.FullName] == brightness) return;
             LastSend[light.FullName] = brightness;
 
             var client = new LocalHueClient(ipAddress);
-            client.Initialize(ApiKeyManager.GetApiKey(ipAddress));
+            client.Initialize(ApiKeyManager.GetApiKey(light.BridgeId));
             var command = new LightCommand();
             if (brightness > 0)
             {

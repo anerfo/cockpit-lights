@@ -2,37 +2,53 @@ using CockpitLights.Hue;
 using CockpitLights.Model;
 using CockpitLights.Msfs;
 using Q42.HueApi.Models.Bridge;
+using System.Xml.Linq;
 
 namespace CockpitLights
 {
     public partial class MainForm : Form
     {
         private Manager HueManager;
-        private Connector MsfsConnection;
-        private Profile CurrentProfile;
+        private ProfileManager ProfileManager;
         private const string NoBridgeFoundMessage = "No Hue Bridge found";
+        public Action SimConnectMessage = () => { };
 
-        public MainForm()
+        internal MainForm(ProfileManager profileManager, Manager hueManager)
         {
             InitializeComponent();
-            CurrentProfile = new Profile();
-            HueManager = new Manager()
+            ProfileManager = profileManager;
+            HueManager = hueManager;
+            hueManager.BridgesDetected = bridges => BeginInvoke(OnBridesDetected, bridges);
+            UpdateProfiles();
+        }
+
+        private void UpdateProfiles()
+        {
+            var updateRequired = ProfileView.Items.Count != ProfileManager.Profiles.Count;
+            foreach (var profile in ProfileManager.Profiles)
             {
-                BridgesDetected = bridges => BeginInvoke(OnBridesDetected, bridges)
-            };
-            MsfsConnection = new Connector(Handle, CurrentProfile.Lights)
-            {
-                LightValueReceived = (light, value) => {
-                    HueManager.SetLight(light, value);
+                if(ProfileView.Items.Contains(profile.Name) == false)
+                {
+                    updateRequired = true;
+                    break;
                 }
-            };
+            }
+            if (updateRequired)
+            {
+                ProfileView.Items.Clear();
+                foreach (var profile in ProfileManager.Profiles)
+                {
+                    ProfileView.Items.Add(profile.Name);
+                }
+                ProfileView.SelectedItem = ProfileManager.ActiveProfile?.Name;
+            }
         }
 
         protected override void DefWndProc(ref Message m)
         {
             if (m.Msg == Constants.WM_USER_SIMCONNECT)
             {
-                MsfsConnection.ReceiveMessage();
+                SimConnectMessage();
             }
             else
             {
@@ -53,6 +69,7 @@ namespace CockpitLights
             else
             {
                 BridgesView.Items.Add(NoBridgeFoundMessage);
+                BridgesView.Items.Add("001788fffe63baa2");
             }
         }
 
@@ -92,7 +109,7 @@ namespace CockpitLights
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            CurrentProfile.Store(GetCurrentMapEntry());
+            ProfileManager.Store(GetCurrentMapEntry());
         }
 
         private Light GetCurrentMapEntry()
@@ -110,12 +127,12 @@ namespace CockpitLights
 
         private void LightsView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var entry = CurrentProfile.GetLight((string)BridgesView.SelectedItem, (string)LightsView.SelectedItem);
-            if (entry != null)
+            var light = ProfileManager.ActiveProfile.GetLight((string)BridgesView.SelectedItem, (string)LightsView.SelectedItem);
+            if (light != null)
             {
-                SimVarView.Text = entry.Simvar;
-                FactorView.Text = $"{entry.Factor}";
-                ColorView.BackColor = Color.FromArgb(entry.Color);
+                SimVarView.Text = light.Simvar;
+                FactorView.Text = $"{light.Factor}";
+                ColorView.BackColor = Color.FromArgb(light.Color);
             }
         }
 
@@ -128,7 +145,48 @@ namespace CockpitLights
 
         private void TestButton_Click(object sender, EventArgs e)
         {
-            HueManager.SetLight(GetCurrentMapEntry(), 255);
+            HueManager.SetLight(GetCurrentMapEntry(), 255, true);
+        }
+
+        private void AddProfileButton_Click(object sender, EventArgs e)
+        {
+            if (ProfileNameView.Visible)
+            {
+                AddNewProfile(ProfileNameView.Text);
+                ProfileNameView.Hide();
+            }
+            else
+            {
+                ProfileNameView.Show();
+                ProfileNameView.Focus();
+            }
+        }
+
+        private void ProfileView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ProfileManager.SetActiveProfile((string)ProfileView.SelectedItem);
+            LightsView_SelectedIndexChanged(sender, e);
+        }
+
+        private void AddNewProfile(string name)
+        {
+            ProfileManager.NewProfile(name);
+            UpdateProfiles();
+        }
+
+        private void ProfileNameView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                AddNewProfile(ProfileNameView.Text);
+                ProfileNameView.Hide();
+            }
+        }
+
+        private void RemoveProfileButton_Click(object sender, EventArgs e)
+        {
+            ProfileManager.DeleteActiveProfile();
+            UpdateProfiles();
         }
     }
 }

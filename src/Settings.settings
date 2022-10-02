@@ -5,7 +5,10 @@
     <Setting Name="ApiKeys" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Lights" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="Profiles" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ActiveProfile" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

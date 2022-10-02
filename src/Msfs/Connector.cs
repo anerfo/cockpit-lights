@@ -10,16 +10,16 @@ namespace CockpitLights.Msfs
         private Timer RequestTimer;
         private SimConnect? SimConnect;
         private IntPtr Handle;
-        public IEnumerable<Light> Lights;
+        public ProfileManager ProfileManager;
 
         public Action<Light, byte> LightValueReceived = (entry, value) => { };
         private Dictionary<REQUEST, Light> RunningRequests;
         private Dictionary<string, REQUEST> DefineIds;
 
-        public Connector(IntPtr handle, IEnumerable<Light> lights)
+        public Connector(IntPtr handle, ProfileManager profileManager)
         {
             Handle = handle;
-            Lights = lights;
+            ProfileManager = profileManager;
             SimConnect = null;
             ConnectTimer = new Timer(Constants.ConnectInterval);
             ConnectTimer.Start();
@@ -82,7 +82,6 @@ namespace CockpitLights.Msfs
 
         private void SimConnect_OnRecvOpen(SimConnect sender, SIMCONNECT_RECV_OPEN data)
         {
-            RegisterSimVars();
             RequestTimer.Start();
         }
 
@@ -90,9 +89,9 @@ namespace CockpitLights.Msfs
         {
             if (SimConnect != null)
             {
-                foreach (var light in Lights)
+                foreach (var light in ProfileManager.ActiveProfile.Lights)
                 {
-                    var id = DefineIds[light.Simvar!];
+                    var id = GetRequestId(light.Simvar!); 
                     if (RunningRequests.ContainsKey(id) == false)
                     {
                         RunningRequests[id] = light;
@@ -102,21 +101,16 @@ namespace CockpitLights.Msfs
             }
         }
 
-        private void RegisterSimVars()
+        private REQUEST GetRequestId(string simvar)
         {
-            if (SimConnect != null)
+            if (DefineIds.ContainsKey(simvar) == false)
             {
-                foreach (var light in Lights)
-                {
-                    if (DefineIds.ContainsKey(light.Simvar!) == false)
-                    {
-                        var id = (REQUEST)DefineIds.Count;
-                        DefineIds[light.Simvar!] = id;
-                        SimConnect.AddToDataDefinition(id, light.Simvar, string.Empty, SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
-                        SimConnect.RegisterDataDefineStruct<double>(id);
-                    }
-                }
+                var id = (REQUEST)DefineIds.Count;
+                DefineIds[simvar] = id;
+                SimConnect!.AddToDataDefinition(id, simvar, string.Empty, SIMCONNECT_DATATYPE.FLOAT64, 0.0f, SimConnect.SIMCONNECT_UNUSED);
+                SimConnect.RegisterDataDefineStruct<double>(id);
             }
+            return DefineIds[simvar];
         }
     }
 }

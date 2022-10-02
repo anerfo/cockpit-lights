@@ -36,12 +36,24 @@ namespace CockpitLights {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Collections.Specialized.StringCollection Lights {
+        public global::System.Collections.Specialized.StringCollection Profiles {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["Lights"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["Profiles"]));
             }
             set {
-                this["Lights"] = value;
+                this["Profiles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ActiveProfile {
+            get {
+                return ((string)(this["ActiveProfile"]));
+            }
+            set {
+                this["ActiveProfile"] = value;
             }
         }
     }
