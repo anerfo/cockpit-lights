@@ -1,4 +1,4 @@
-using CockpitLights.Hue;
+﻿using CockpitLights.Hue;
 using CockpitLights.Model;
 using CockpitLights.Msfs;
 using Q42.HueApi.Models.Bridge;
@@ -186,6 +186,11 @@ namespace CockpitLights
         {
             ProfileManager.DeleteActiveProfile();
             UpdateProfiles();
+        }
+
+        internal void OnSimConnectionStatusChanged(bool connected)
+        {
+            SimConnectionStatusView.Text = connected ? "✔ Connected" : "❌ Not connected";
         }
     }
 }

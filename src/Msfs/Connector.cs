@@ -1,5 +1,6 @@
 ﻿using CockpitLights.Model;
 using Microsoft.FlightSimulator.SimConnect;
+using Newtonsoft.Json.Linq;
 using Timer = System.Timers.Timer;
 
 namespace CockpitLights.Msfs
@@ -12,7 +13,8 @@ namespace CockpitLights.Msfs
         private IntPtr Handle;
         public ProfileManager ProfileManager;
 
-        public Action<Light, byte> LightValueReceived = (entry, value) => { };
+        public Action<Light, double> LightValueReceived = (entry, value) => { };
+        public Action<bool> SimConnectionStatusChanged = (connected) => { };
         private Dictionary<REQUEST, Light> RunningRequests;
         private Dictionary<string, REQUEST> DefineIds;
 
@@ -63,30 +65,37 @@ namespace CockpitLights.Msfs
                 var entry = RunningRequests[id];
                 RunningRequests.Remove(id);
                 var value = (double)data.dwData[0];
-                var brightness = (byte)(value * entry.Factor);
-                LightValueReceived(entry, brightness);
+                LightValueReceived(entry, value);
             }
         }
 
         private void SimConnect_OnRecvException(SimConnect sender, SIMCONNECT_RECV_EXCEPTION data)
         {
-
+            var id = (REQUEST)data.dwID;
+            if (RunningRequests.ContainsKey(id))
+            {
+                RunningRequests.Remove(id);
+            }
         }
 
-        private void SimConnect_OnRecvQuit(SimConnect sender, SIMCONNECT_RECV data)
+            private void SimConnect_OnRecvQuit(SimConnect sender, SIMCONNECT_RECV data)
         {
             SimConnect = null;
             ConnectTimer.Start();
             RequestTimer.Stop();
+            SimConnectionStatusChanged(false);
         }
 
         private void SimConnect_OnRecvOpen(SimConnect sender, SIMCONNECT_RECV_OPEN data)
         {
+            SimConnectionStatusChanged(true);
             RequestTimer.Start();
         }
 
         private void RequestTimerElapsed(object? sender, EventArgs e)
         {
+            RequestTimer.Stop();
+
             if (SimConnect != null)
             {
                 foreach (var light in ProfileManager.ActiveProfile.Lights)
@@ -95,10 +104,11 @@ namespace CockpitLights.Msfs
                     if (RunningRequests.ContainsKey(id) == false)
                     {
                         RunningRequests[id] = light;
-                        SimConnect.RequestDataOnSimObjectType(Constants.RudderPedalRequest.eRequest, id, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
+                        SimConnect.RequestDataOnSimObjectType(id, id, 0, SIMCONNECT_SIMOBJECT_TYPE.USER);
                     }
                 }
             }
+            RequestTimer.Start();
         }
 
         private REQUEST GetRequestId(string simvar)

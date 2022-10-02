@@ -43,11 +43,16 @@
             this.RemoveProfileButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.SimConnectionStatusView = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // BridgesView
@@ -58,9 +63,9 @@
             this.BridgesView.ItemHeight = 15;
             this.BridgesView.Items.AddRange(new object[] {
             "Searching..."});
-            this.BridgesView.Location = new System.Drawing.Point(0, 0);
+            this.BridgesView.Location = new System.Drawing.Point(0, 15);
             this.BridgesView.Name = "BridgesView";
-            this.BridgesView.Size = new System.Drawing.Size(120, 244);
+            this.BridgesView.Size = new System.Drawing.Size(120, 199);
             this.BridgesView.TabIndex = 0;
             this.BridgesView.SelectedIndexChanged += new System.EventHandler(this.BridgesView_SelectedIndexChanged);
             // 
@@ -70,9 +75,9 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.LightsView.FormattingEnabled = true;
             this.LightsView.ItemHeight = 15;
-            this.LightsView.Location = new System.Drawing.Point(126, 0);
+            this.LightsView.Location = new System.Drawing.Point(126, 15);
             this.LightsView.Name = "LightsView";
-            this.LightsView.Size = new System.Drawing.Size(120, 244);
+            this.LightsView.Size = new System.Drawing.Size(120, 199);
             this.LightsView.TabIndex = 1;
             this.LightsView.SelectedIndexChanged += new System.EventHandler(this.LightsView_SelectedIndexChanged);
             // 
@@ -92,7 +97,7 @@
             // 
             // RegisterButton
             // 
-            this.RegisterButton.Location = new System.Drawing.Point(145, 12);
+            this.RegisterButton.Location = new System.Drawing.Point(149, 29);
             this.RegisterButton.Name = "RegisterButton";
             this.RegisterButton.Size = new System.Drawing.Size(75, 23);
             this.RegisterButton.TabIndex = 4;
@@ -199,6 +204,15 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Light";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(116, 66);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(40, 15);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Factor";
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -217,20 +231,48 @@
             this.label1.TabIndex = 8;
             this.label1.Text = "SimConnect Variable";
             // 
-            // label3
+            // label4
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(116, 66);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(40, 15);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Factor";
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(0, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(108, 15);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "Found Hue Bridges";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(126, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(64, 15);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Hue Lights";
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SimConnectionStatusView});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 222);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(466, 22);
+            this.statusStrip1.TabIndex = 16;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // SimConnectionStatusView
+            // 
+            this.SimConnectionStatusView.Name = "SimConnectionStatusView";
+            this.SimConnectionStatusView.Size = new System.Drawing.Size(88, 17);
+            this.SimConnectionStatusView.Text = "Not Connected";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(466, 244);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.ProfileNameView);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.RegisterButton);
@@ -242,6 +284,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -266,5 +310,9 @@
         private Label label2;
         private Label label1;
         private Label label3;
+        private Label label4;
+        private Label label5;
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel SimConnectionStatusView;
     }
 }

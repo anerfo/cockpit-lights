@@ -22,14 +22,32 @@ namespace CockpitLights.Hue
             {
                 if (bridgesLocateTask.IsFaulted == false)
                 {
-                    IpAddresses.Clear();
-                    foreach (var bridge in bridgesLocateTask.Result)
+                    if (bridgesLocateTask.Result.Any())
                     {
-                        IpAddresses[bridge.BridgeId] = bridge.IpAddress;
+                        OnBridgesFound(bridgesLocateTask.Result);
                     }
-                    BridgesDetected(bridgesLocateTask.Result);
+                    else
+                    {
+                        HueBridgeDiscovery.CompleteDiscoveryAsync(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(30)).ContinueWith(completeDiscoveryTask =>
+                        {
+                            if (completeDiscoveryTask.IsFaulted == false)
+                            {
+                                OnBridgesFound(completeDiscoveryTask.Result);
+                            }
+                        });
+                    }
                 }
             });
+        }
+
+        private void OnBridgesFound(IEnumerable<LocatedBridge> bridges)
+        {
+            IpAddresses.Clear();
+            foreach (var bridge in bridges)
+            {
+                IpAddresses[bridge.BridgeId] = bridge.IpAddress;
+            }
+            BridgesDetected(bridges);
         }
 
         public async Task<IEnumerable<Light>> StartGetLights(string id)
