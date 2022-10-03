@@ -120,7 +120,8 @@ namespace CockpitLights
                 LightName = (string)LightsView.SelectedItem,
                 Color = ColorView.BackColor.ToArgb(),
                 Factor = factor,
-                Simvar = SimVarView.Text
+                Simvar = SimVarView.Text,
+                Bit = (int)BitView.Value
             };
         }
 
@@ -132,6 +133,7 @@ namespace CockpitLights
                 SimVarView.Text = light.Simvar;
                 FactorView.Text = $"{light.Factor}";
                 ColorView.BackColor = Color.FromArgb(light.Color);
+                BitView.Value = light.Bit;
             }
         }
 
@@ -145,6 +147,11 @@ namespace CockpitLights
         private void TestButton_Click(object sender, EventArgs e)
         {
             HueManager.SetLight(GetCurrentMapEntry(), 255, true);
+        }
+
+        private void TurnOffButton_Click(object sender, EventArgs e)
+        {
+            HueManager.SetLight(GetCurrentMapEntry(), 0, true);
         }
 
         private void AddProfileButton_Click(object sender, EventArgs e)

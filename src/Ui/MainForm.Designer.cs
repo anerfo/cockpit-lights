@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.BridgesView = new System.Windows.Forms.ListBox();
             this.LightsView = new System.Windows.Forms.ListBox();
             this.SimVarView = new System.Windows.Forms.TextBox();
@@ -43,6 +44,9 @@
             this.RemoveProfileButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.TurnOffButton = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.BitView = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -52,6 +56,7 @@
             this.SimConnectionStatusView = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BitView)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,7 +95,7 @@
             // 
             // FactorView
             // 
-            this.FactorView.Location = new System.Drawing.Point(160, 63);
+            this.FactorView.Location = new System.Drawing.Point(48, 90);
             this.FactorView.Name = "FactorView";
             this.FactorView.Size = new System.Drawing.Size(39, 23);
             this.FactorView.TabIndex = 3;
@@ -108,7 +113,7 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(124, 88);
+            this.SaveButton.Location = new System.Drawing.Point(124, 119);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(75, 23);
             this.SaveButton.TabIndex = 5;
@@ -123,13 +128,13 @@
             this.ColorView.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ColorView.Location = new System.Drawing.Point(48, 63);
             this.ColorView.Name = "ColorView";
-            this.ColorView.Size = new System.Drawing.Size(37, 23);
+            this.ColorView.Size = new System.Drawing.Size(39, 23);
             this.ColorView.TabIndex = 6;
             this.ColorView.Click += new System.EventHandler(this.ColorView_Click);
             // 
             // TestButton
             // 
-            this.TestButton.Location = new System.Drawing.Point(124, 117);
+            this.TestButton.Location = new System.Drawing.Point(124, 62);
             this.TestButton.Name = "TestButton";
             this.TestButton.Size = new System.Drawing.Size(75, 23);
             this.TestButton.TabIndex = 7;
@@ -189,6 +194,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.TurnOffButton);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.BitView);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.label1);
@@ -204,10 +212,36 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Light";
             // 
+            // TurnOffButton
+            // 
+            this.TurnOffButton.Location = new System.Drawing.Point(124, 90);
+            this.TurnOffButton.Name = "TurnOffButton";
+            this.TurnOffButton.Size = new System.Drawing.Size(75, 23);
+            this.TurnOffButton.TabIndex = 18;
+            this.TurnOffButton.Text = "Turn off";
+            this.TurnOffButton.UseVisualStyleBackColor = true;
+            this.TurnOffButton.Click += new System.EventHandler(this.TurnOffButton_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 123);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(21, 15);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "Bit";
+            // 
+            // BitView
+            // 
+            this.BitView.Location = new System.Drawing.Point(48, 119);
+            this.BitView.Name = "BitView";
+            this.BitView.Size = new System.Drawing.Size(39, 23);
+            this.BitView.TabIndex = 11;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(116, 66);
+            this.label3.Location = new System.Drawing.Point(6, 93);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(40, 15);
             this.label3.TabIndex = 10;
@@ -279,11 +313,16 @@
             this.Controls.Add(this.LightsView);
             this.Controls.Add(this.BridgesView);
             this.Controls.Add(this.groupBox2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(482, 283);
+            this.MinimumSize = new System.Drawing.Size(482, 283);
             this.Name = "MainForm";
             this.Text = "Cockpit Lights";
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BitView)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -314,5 +353,8 @@
         private Label label5;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel SimConnectionStatusView;
+        private NumericUpDown BitView;
+        private Label label6;
+        private Button TurnOffButton;
     }
 }

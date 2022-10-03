@@ -10,6 +10,8 @@ namespace CockpitLights.Model
         public string? Simvar;
         public int Color = 0xFFFFFF;
         public double Factor = 1;
+        public int Bit = 0;
+
         public bool IsSameLight(Light other)
         {
             return other.BridgeId == BridgeId && other.LightName == LightName;

@@ -1,6 +1,5 @@
 using CockpitLights.Hue;
 using CockpitLights.Msfs;
-using System.Data;
 
 namespace CockpitLights
 {
@@ -25,10 +24,20 @@ namespace CockpitLights
                 {
                     try
                     {
-                        byte brightness = Convert.ToByte(value * light.Factor);
+                        byte brightness;
+                        if (light.Bit > 0)
+                        {
+                            var mask = 1 << light.Bit;
+                            var intValue = (Convert.ToInt64(value) & mask) >> light.Bit;
+                            brightness = Convert.ToByte(intValue * light.Factor);
+                        }
+                        else
+                        {
+                            brightness = Convert.ToByte(value * light.Factor);
+                        }
                         hueManager.SetLight(light, brightness);
                     }
-                    catch(Exception ex) { }
+                    catch(Exception) { }
                 },
                 SimConnectionStatusChanged = connected =>
                 {

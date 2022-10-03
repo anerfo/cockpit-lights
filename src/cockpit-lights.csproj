@@ -10,7 +10,12 @@
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>C:\Users\Andi\source\repos\CockpitLights\CockpitLights\key.snk</AssemblyOriginatorKeyFile>
     <PlatformTarget>x64</PlatformTarget>
+    <ApplicationIcon>cockpit-lights.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="cockpit-lights.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Q42.HueApi" Version="3.20.0" />
