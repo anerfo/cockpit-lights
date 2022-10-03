@@ -9,17 +9,10 @@ on:
 jobs:
 
   build:
-
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-
     runs-on: windows-latest
 
     env:
       Solution_Name: CockpitLights.sln
-      Wap_Project_Directory: your-wap-project-directory-name
-      Wap_Project_Path: your-wap-project-path
 
     steps:
     - name: Checkout
@@ -36,20 +29,13 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=Release
 
-#    - name: Create the app package
-#      run: msbuild $env:Wap_Project_Path /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:Appx_Package_Build_Mode /p:AppxBundle=$env:Appx_Bundle /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
-#      env:
-#        Appx_Bundle: Always
-#        Appx_Bundle_Platforms: x86|x64
-#        Appx_Package_Build_Mode: StoreUpload
-#        Configuration: ${{ matrix.configuration }}
+    - name: Create the app package
+      run: dotnet publish -p:PublishProfile=FolderProfile
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
         name: Binaries
-        path: src\bin
+        path: src\bin\Release\net6.0-windows\publish\win-x64
