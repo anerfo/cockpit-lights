@@ -4,7 +4,7 @@ App to sync MSFS variables with Hue lights.
 ![Screenshot](resources/Default%20Flood%20Mapping.png)
 
 You can switch on your Hue lights from within Microsoft Flight Simulator.
-For example you can connect a Hue light to the Dome light in the PMDG Boeing 737, the flood light in the Bonanza G37 or a cabin light!
+For example you can connect a Hue light to the Dome light in the PMDG Boeing 737, the flood light in the Bonanza G36 or a cabin light!
 
 ## Usage
 
