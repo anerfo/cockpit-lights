@@ -77,7 +77,7 @@ namespace CockpitLights
             RegisterButton.Visible = false;
             LightsView.Items.Clear();
             LightsView.Items.Add("Fetching...");
-            var lights = await HueManager.StartGetLights((string)BridgesView.SelectedItem);
+            var lights = await HueManager.StartGetLights((string)BridgesView.SelectedItem!);
             LightsView.Items.Clear();
             if(lights.Any())
             {
@@ -96,7 +96,7 @@ namespace CockpitLights
         {
             try
             {
-                await HueManager.StartRegister((string)BridgesView.SelectedItem);
+                await HueManager.StartRegister((string)BridgesView.SelectedItem!);
             }
             catch(Exception ex)
             {
@@ -116,8 +116,8 @@ namespace CockpitLights
             double.TryParse(FactorView.Text, out double factor);
             return new Light
             {
-                BridgeId = (string)BridgesView.SelectedItem,
-                LightName = (string)LightsView.SelectedItem,
+                BridgeId = (string)BridgesView.SelectedItem!,
+                LightName = (string)LightsView.SelectedItem!,
                 Color = ColorView.BackColor.ToArgb(),
                 Factor = factor,
                 Simvar = SimVarView.Text,
@@ -127,7 +127,7 @@ namespace CockpitLights
 
         private void LightsView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var light = ProfileManager.ActiveProfile.GetLight((string)BridgesView.SelectedItem, (string)LightsView.SelectedItem);
+            var light = ProfileManager.ActiveProfile.GetLight((string)BridgesView.SelectedItem!, (string)LightsView.SelectedItem!);
             if (light != null)
             {
                 SimVarView.Text = light.Simvar;
@@ -170,7 +170,7 @@ namespace CockpitLights
 
         private void ProfileView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ProfileManager.SetActiveProfile((string)ProfileView.SelectedItem);
+            ProfileManager.SetActiveProfile((string)ProfileView.SelectedItem!);
             LightsView_SelectedIndexChanged(sender, e);
         }
 

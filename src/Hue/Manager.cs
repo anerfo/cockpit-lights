@@ -67,7 +67,7 @@ namespace CockpitLights.Hue
             if (IpAddresses.TryGetValue(id, out var ipAddress))
             {
                 ILocalHueClient client = new LocalHueClient(ipAddress);
-                var apiKey = await client.RegisterAsync(Application.ProductName, Environment.MachineName);
+                var apiKey = await client.RegisterAsync(Application.ProductName!, Environment.MachineName);
                 ApiKeyManager.AddApiKey(id, apiKey!);
             }
         }
