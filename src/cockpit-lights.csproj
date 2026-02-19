@@ -7,8 +7,8 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>C:\Users\Andi\source\repos\CockpitLights\CockpitLights\key.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>False</SignAssembly>
+    <AssemblyOriginatorKeyFile></AssemblyOriginatorKeyFile>
     <PlatformTarget>x64</PlatformTarget>
     <ApplicationIcon>cockpit-lights.ico</ApplicationIcon>
   </PropertyGroup>
