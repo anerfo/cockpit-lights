@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Q42.HueApi" Version="3.20.1" />
-    <PackageReference Include="Q42.HueApi.ColorConverters" Version="3.20.1" />
+    <PackageReference Include="Q42.HueApi" Version="3.24.0" />
+    <PackageReference Include="Q42.HueApi.ColorConverters" Version="3.23.2" />
   </ItemGroup>
 
   <ItemGroup>
